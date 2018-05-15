@@ -1,19 +1,33 @@
-const express		= require('express');
-const path 			= require('path');
-const app 			= express();
-const parseurl 		= require('parseurl');
-const SRes 			= require('./routes/s_response/res');	
+const express		= require('express')
+const path 			= require('path')
+const parseurl 		= require('parseurl')
+const app 			= express()
+const cookieParser 	= require('cookie-parser')
+const jwt 			= require('jsonwebtoken')
+
+const SRes 			= require('./routes/s_response/res')
+const config 		= require('./routes/mysql/config')
+
+var books			= require('./routes/books.js')
+var signin 			= require('./routes/signin.js')
+var signup			= require('./routes/signup.js') 
+var userData 		= require('./routes/userData.js')
 
 var port 			= 80;
 
-app.use('/', require('./routes/books.js'));
-app.use('/', require('./routes/signin.js'));
-app.use('/', require('./routes/signup.js'));
+//jwt secret
+app.set("secret", config.secret)
+app.use(cookieParser())
+
+app.use('/', userData.router)
+app.use('/', books)
+app.use('/', signin)
+app.use('/', signup)
 
 app.use(function(req, res, next) {
 	if (req) {
 		if (req.code === 404) {
-			res.json(400, SRes.message[2])
+			res.json(404, SRes.message.error)
 		}
 	} 
 });

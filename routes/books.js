@@ -1,16 +1,21 @@
-const router 		 	= require('express').Router()
-const mysql 		 	= require('mysql');
-const express 		 	= require('express');
-const SQL   		 	= require('./mysql/connect');
-const bodyParser  	 	= require('body-parser');
-const session   	 	= require('express-session');
-const parseurl 	 	 	= require('parseurl');
-const app 			 	= express();
+const express 		 	= require('express')
+const router 		 	= express.Router()
+const mysql 		 	= require('mysql')
+const bodyParser  	 	= require('body-parser')
+const session   	 	= require('express-session')
+const parseurl 	 	 	= require('parseurl')
+const cookieParser 		= require('cookie-parser')
+
+const SQL   		 	= require('./mysql/connect')
+const sRes 				= require('./s_response/res')
 
 var urlencodedParser 	= bodyParser.urlencoded({extended: true});
 var parseJSON 			= bodyParser.json();
 
 router.get('/getBooks', urlencodedParser, function (req, res, next) {
+	var data = req.data;
+	console.log(data);
+
 	if(!req.body || req.body.length === 0) {
     	console.log('request body not found');
     	return res.sendStatus(400);
@@ -38,20 +43,26 @@ router.post('/bookItBook', urlencodedParser, parseJSON, function (req, res, next
 
   	var id = req.body.id;
 
-  	console.log('req', req, ' | req.body', req.body, ' | id', id)
-
-  	SQL.MySQL_Connection(SQL.DBData).query(SQL.bookItBook, [req.body.id], function(error, result, fields) {
+  	SQL.MySQL_Connection(SQL.DBData).query(SQL.bookItBook, [req.body.id], function(error, result) {
 		if (error) {
-			throw error;
+			res.json({
+                type: false,
+                data: "Error occured: " + error
+            });
 		} else {
 			try {
 				var result = result[0];
-				console.log(result);
 
-				res.send({message: 'Book It'});
+				res.status(200).json({
+					type 	: true,
+					message : sRes.message.success_b
+				});
 			} catch(e) {
 				console.log('Error:', error);
-				res.send({message: 'Error'});
+				res.status(500).json({
+					type 	: false,
+					message : sRes.message.error
+				});
 			}
 		}
 	});

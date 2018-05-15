@@ -1,11 +1,11 @@
 const mysql 	= require('mysql');
-const conf 		= require('./../mysql/config.json');
+const config 	= require('./../mysql/config.json');
 
 var DBData = {
-	host     : conf.host, 
-	user     : conf.user, 
-	password : conf.pass, 
-	database : conf.db
+	host     : config.host, 
+	user     : config.user, 
+	password : config.pass, 
+	database : config.db
 };
 
 var Connection = mysql.createConnection(DBData);
@@ -20,10 +20,12 @@ var MySQL_Connection = function(DBData) {
 	console.log(Connection);
 };
 
-module.exports.Connection 		= Connection;
-module.exports.DBData 			= DBData;
-module.exports.getBooks 		= getBooks;
-module.exports.bookItBook 		= bookItBook;
-module.exports.signIn 			= signIn;
-module.exports.signUp 			= signUp;
-module.exports.MySQL_Connection = MySQL_Connection;
+module.exports = {
+	MySQL_Connection : MySQL_Connection,
+	Connection 		 : Connection,
+	DBData 			 : DBData,
+	getBooks 		 : getBooks,
+	bookItBook 		 : bookItBook,
+	signIn 			 : signIn,
+	signUp 			 : signUp
+};

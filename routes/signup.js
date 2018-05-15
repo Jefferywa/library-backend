@@ -1,10 +1,11 @@
-const router 		 = require('express').Router();
-const mysql 		 = require('mysql');
 const express 		 = require('express');
-const SQL   		 = require('./mysql/connect');
-const SRes 		 	 = require('./s_response/res');	
+const router 		 = express.Router();
+const mysql 		 = require('mysql');
 const bodyParser  	 = require('body-parser');
 const crypto 		 = require('crypto');
+
+const SQL   		 = require('./mysql/connect');
+const SRes 		 	 = require('./s_response/res');	
 
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var parseJSON 		 = bodyParser.json();
@@ -35,15 +36,25 @@ router.post('/signup', urlencodedParser, parseJSON, function (req, res) {
   	var hash = crypto.createHash('sha256').update(salt + password).digest('base64')
 
 	SQL.MySQL_Connection(SQL.DBData).query(SQL.signUp, [login, hash, firstname, lastname, salt], function(error, result) { 
-		if (error) throw error;
-		try {
-			res.status(200).json({ status :  SRes.status.true, msg : SRes.message.success_r});	
-		} catch(e) {
-			res.status(500).json({ msg : SRes.message.error});	
-		}	
+		if (error) {
+			res.json({
+                type: false,
+                data: "Error occured: " + error
+            });
+		} else {
+			try {
+				res.status(200).json({ 
+					type 	:  true, 
+					message : SRes.message.success_r
+				});	
+			} catch(e) {
+				res.status(500).json({
+					type 	: false,
+					message : SRes.message.error
+				});	
+			}
+		}
 	});
-});
-  	
-  	
+}); 	
 
 module.exports = router;
