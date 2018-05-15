@@ -1,39 +1,48 @@
-const router 		 = require('express').Router();
-const mysql 		 = require('mysql');
-const express 		 = require('express');
-const SQL   		 = require('./../mysql/connect');
-const bodyParser  	 = require("body-parser");
-const session   	 = require('express-session');
-const urlencodedParser = bodyParser.urlencoded({extended: false});
+const router 		 	= require('express').Router()
+const mysql 		 	= require('mysql')
+const express 		 	= require('express')
+const SQL   		 	= require('./mysql/connect')
+const config 			= require('./mysql/config.json')
+const SRes 		 	 	= require('./s_response/res')
+const bodyParser  	 	= require('body-parser')
+const session   	 	= require('express-session')
+const crypto 			= require('crypto')
 
-router.get('/signin', function (req, res) {
-	res.render('signin.ejs');
-});
+var urlencodedParser 	= bodyParser.urlencoded({extended: false});
+var parseJSON 			= bodyParser.json();
 
-router.post('/login', urlencodedParser, function (req, res) {
+router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 	if(!req.body || req.body.length === 0) {
     	console.log('request body not found');
 	    return res.sendStatus(400);
   	}
 
-	SQL.MySQL_Connection(SQL.DBData).query(SQL.Auth, [req.body.login, req.body.pass], function(error, result) { 
+  	var login = req.body.login
+	var password = req.body.password
+
+	SQL.MySQL_Connection(SQL.DBData).query(SQL.signIn, [login], function(error, result) {
 		if (error) throw error;
-			try {
-				var result = result[0];
-				if (result[0].ULogin!=undefined) {
+		try {
+			var result = result[0];
 
-					res.send({message: 'Вход успешен'});
+			if (result.length != 0) {
 
-					var login = result[0].login;
-					var uid = result[0].uid;
-
-					global.uData = [{UID, ULogin}];
+			  	var salt = result[0].salt
+			  	var hash = crypto.createHash('sha256').update(salt + password).digest('base64')
+				
+				if(hash === result[0].password) {
+				    res.status(200).json({ status : SRes.status.true, msg : SRes.message.success_l })
+				} else {
+					res.status(403).json({ status : SRes.status.false, msg : SRes.message.badRequest })
 				}
-			} catch(e) {
-				console.log('Error:', error);
-				res.send({message: 'Вы ввели неправельный логин или пароль'});
+			
+			} else {
+				res.status(403).json({ status : SRes.status.false, msg : SRes.message.badRequest })
 			}
-	}); 
+		} catch(e) {
+			res.status(500).json({ msg : SRes.message.error });
+		}
+	});
 });
 
 module.exports = router;

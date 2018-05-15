@@ -12,8 +12,8 @@ var Connection = mysql.createConnection(DBData);
 
 var getBooks 	= 'CALL getBooks()';
 var bookItBook 	= 'CALL bookItBook(?)';
-var	signIn 		= 'CALL signin(?, ?)';
-var signUp		= 'CALL signup(?, ?, ?, ?)';
+var	signIn 		= 'CALL signin(?)';
+var signUp		= 'CALL signup(?, ?, ?, ?, ?)';
 
 var MySQL_Connection = function(DBData) {
 	return Connection = mysql.createConnection(DBData);
@@ -23,6 +23,7 @@ var MySQL_Connection = function(DBData) {
 module.exports.Connection 		= Connection;
 module.exports.DBData 			= DBData;
 module.exports.getBooks 		= getBooks;
+module.exports.bookItBook 		= bookItBook;
 module.exports.signIn 			= signIn;
 module.exports.signUp 			= signUp;
 module.exports.MySQL_Connection = MySQL_Connection;
