@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css" crossorigin="anonymous">
+    
+    <title>Authorization</title>
+</head>
+<body>
+    <div class="container auth">
+        <form method="post" class="form-auth singin">
+            <div class="form-group">
+                <label for="text">Email</label>
+                <input type="text" class="form-control" id="login" aria-describedby="emailHelp" placeholder="Введите Email" required="required">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" class="form-control" id="password" placeholder="Ввдите пароль" required="required">
+            </div>
+            <button class="btn btn-primary btn-login" type="submit" formaction="/signin">Войти</button>
+        </form>
+        <form method="post" class="form-auth singin">
+            <button class="btn btn-primary btn-register" type="submit" formaction="/registration">Регистрация</button>
+        </form>
+    </div>
+    <script src="./lib/js/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="./js/scripts.js" crossorigin="anonymous"></script>
+</body>
+</html>

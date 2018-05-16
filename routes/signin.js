@@ -14,6 +14,10 @@ const auth = require('./auth/auth')
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var parseJSON = bodyParser.json();
 
+router.get('/auth', function (req, res) {
+	res.render('pages/auth')
+})
+
 router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 	if (!req.body || req.body.length === 0) {
 		console.log('request body not found');
@@ -27,21 +31,21 @@ router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 		if (error) {
 			res.json({
 				type: false,
-				data: "Error occured: " + error
+				message: "Error occured: " + error
 			});
 		} else {
 			try {
-				if (result) {
+				if (result[0].length != 0) {
 					var result = result[0][0];
 					var userData = {
 						user: {
 							userID: result.uid,
 							userRole: result.userRole,
-							userName: result.login
-						},
-						firstname: result.firstname,
-						lastname: result.lastname,
-						phoneNumber: result.phoneNumber
+							userName: result.login,
+							firstname: result.firstname,
+							lastname: result.lastname,
+							phoneNumber: result.phoneNumber
+						}
 					}
 
 					var salt = result.salt
@@ -58,24 +62,25 @@ router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 							message: SRes.message.success_l
 						})
 					} else {
-						res.status(403).json({
+						res.status(200).json({
 							type: false,
 							message: SRes.message.badRequest
 						})
 					}
 				} else {
-					res.status(403).json({
+					res.status(200).json({
 						type: false,
 						message: SRes.message.badRequest
 					})
 				}
 			} catch (e) {
 				res.status(500).json({
+					type: false,
 					message: SRes.message.error
 				});
 			}
 		}
-	});
-});
+	})
+})
 
 module.exports = router;

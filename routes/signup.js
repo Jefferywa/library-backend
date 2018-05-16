@@ -39,7 +39,7 @@ router.post('/signup', urlencodedParser, parseJSON, function (req, res) {
 		if (error) {
 			res.json({
 				type: false,
-				data: "Error occured: " + error
+				message: "Error occured: " + error
 			});
 		} else {
 			try {
@@ -54,7 +54,7 @@ router.post('/signup', urlencodedParser, parseJSON, function (req, res) {
 				});
 			}
 		}
-	});
-});
+	})
+})
 
 module.exports = router;

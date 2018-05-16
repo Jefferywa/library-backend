@@ -39,8 +39,8 @@ app.use(function (req, res, next) {
 			res.json(404, SRes.message.error)
 		}
 	}
-});
+})
 
 app.listen(port, function () {
 	console.log('Server is running on port: ', port);
-});
+})

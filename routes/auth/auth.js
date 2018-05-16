@@ -10,8 +10,11 @@ function getToken(user, secret) {
 }
 
 function getUser(token, secret) {
-	var user = jwt.verify(token, secret)
-
+	var user = jwt.verify(token, secret, function (err) {
+		if (err) {
+			//console.log(err)
+		}
+	})
 	return user;
 }
 
