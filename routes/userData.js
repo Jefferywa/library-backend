@@ -1,10 +1,10 @@
-const express 		 	= require('express')
-const router 		 	= express.Router()
-const jwt 				= require('jsonwebtoken')
-const cookieParser 		= require('cookie-parser')
+const express = require('express')
+const router = express.Router()
+const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 
-const auth 				= require('./auth/auth')
- 
+const auth = require('./auth/auth')
+
 router.all("*", function (req, res, next) {
 	var data = {};
 	var token = req.cookies["authToken"];
@@ -18,6 +18,7 @@ router.all("*", function (req, res, next) {
 	next();
 })
 
+
 module.exports = {
-	router : router
-};
+	router: router
+};	

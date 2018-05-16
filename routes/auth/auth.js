@@ -1,7 +1,7 @@
-const mysql 	= require('mysql')
-const SQL   	= require('../mysql/connect')
-const SRes 		= require('../s_response/res')
-const jwt 		= require('jsonwebtoken')	
+const mysql = require('mysql')
+const SQL = require('../mysql/connect')
+const SRes = require('../s_response/res')
+const jwt = require('jsonwebtoken')
 
 function getToken(user, secret) {
 	var token = jwt.sign(user, secret, { expiresIn: 2000 })
@@ -16,6 +16,6 @@ function getUser(token, secret) {
 }
 
 module.exports = {
-	getToken : getToken,
-	getUser  : getUser
+	getToken: getToken,
+	getUser: getUser
 };
