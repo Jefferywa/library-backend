@@ -27,8 +27,8 @@ app.use(express.static(path.join(__dirname, './public/')));
 
 app.use(cookieParser())
 
-app.use('/', index)
 app.use('/', userData.router)
+app.use('/', index)
 app.use('/', books)
 app.use('/', signin)
 app.use('/', signup)
