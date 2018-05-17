@@ -12,7 +12,7 @@ const sRes = require('./s_response/res')
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 var parseJSON = bodyParser.json();
 
-router.get('/', urlencodedParser, function (req, res, next) {
+router.get('/getBooks', urlencodedParser, function (req, res, next) {
 	if (!req.body || req.body.length === 0) {
 		console.log('request body not found');
 		return res.sendStatus(400);
@@ -21,7 +21,7 @@ router.get('/', urlencodedParser, function (req, res, next) {
 	SQL.MySQL_Connection(SQL.DBData).query(SQL.getBooks, function (error, result, fields) {
 		if (error) {
 			res.json({
-				type: false,
+				status: false,
 				message: "Error occured: " + error
 			});
 		} else {
@@ -35,21 +35,20 @@ router.get('/', urlencodedParser, function (req, res, next) {
 	SQL.MySQL_Connection(SQL.DBData).end();
 })
 
-router.post('/bookItBook', urlencodedParser, parseJSON, function (req, res, next) {
+router.post('/bookitbook', urlencodedParser, parseJSON, function (req, res) {
+	if (!req.decoded) {
+		console.log(req.decoded);
+	}
+	
 	if (!req.body || req.body.length === 0) {
 		console.log('request body not found');
 		return res.sendStatus(400);
 	}
-	
-	var data = req.data;
-	console.log(data);
 
-	var id = req.body.id;
-
-	SQL.MySQL_Connection(SQL.DBData).query(SQL.bookItBook, [req.body.id], function (error, result) {
+	SQL.MySQL_Connection(SQL.DBData).query(SQL.bookItBook, [req.body.uid, req.body.bid], function (error, result) {
 		if (error) {
 			res.json({
-				type: false,
+				status: false,
 				message: "Error occured: " + error
 			})
 		} else {
@@ -57,13 +56,13 @@ router.post('/bookItBook', urlencodedParser, parseJSON, function (req, res, next
 				var result = result[0];
 
 				res.status(200).json({
-					type: true,
+					status: true,
 					message: sRes.message.success_b
 				})
 			} catch (e) {
 				console.log('Error:', error);
 				res.status(500).json({
-					type: false,
+					status: false,
 					message: sRes.message.error
 				})
 			}

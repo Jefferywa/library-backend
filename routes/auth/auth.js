@@ -4,21 +4,13 @@ const SRes = require('../s_response/res')
 const jwt = require('jsonwebtoken')
 
 function getToken(user, secret) {
-	var token = jwt.sign(user, secret, { expiresIn: 2000 })
+	var token = jwt.sign(user, secret, { 
+		expiresIn: 1800 
+	})
 
 	return token;
 }
 
-function getUser(token, secret) {
-	var user = jwt.verify(token, secret, function (err) {
-		if (err) {
-			//console.log(err)
-		}
-	})
-	return user;
-}
-
 module.exports = {
-	getToken: getToken,
-	getUser: getUser
+	getToken: getToken
 };

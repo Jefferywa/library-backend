@@ -11,7 +11,7 @@ var DBData = {
 var Connection = mysql.createConnection(DBData);
 
 var getBooks 	= 'CALL getBooks()';
-var bookItBook 	= 'CALL bookItBook(?)';
+var bookItBook 	= 'CALL bookItBook(?, ?)';
 var	signIn 		= 'CALL signin(?)';
 var signUp		= 'CALL signup(?, ?, ?, ?, ?)';
 

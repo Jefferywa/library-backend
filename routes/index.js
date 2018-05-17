@@ -5,8 +5,8 @@ const bodyParser = require('body-parser')
 
 const SQL = require('./mysql/connect')
 
-var urlencodedParser = bodyParser.urlencoded({ extended: true });
-var parseJSON = bodyParser.json();
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
+var parseJSON = bodyParser.json()
 
 router.get('/', urlencodedParser, function (req, res, next) {
     if (!req.body || req.body.length === 0) {
@@ -17,7 +17,7 @@ router.get('/', urlencodedParser, function (req, res, next) {
     SQL.MySQL_Connection(SQL.DBData).query(SQL.getBooks, function (error, result, fields) {
         if (error) {
             res.json({
-                type: false,
+                status: false,
                 message: "Error occured: " + error
             });
         } else {

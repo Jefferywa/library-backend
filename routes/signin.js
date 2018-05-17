@@ -30,18 +30,23 @@ router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 	SQL.MySQL_Connection(SQL.DBData).query(SQL.signIn, [login], function (error, result) {
 		if (error) {
 			res.json({
-				type: false,
+				status: false,
 				message: "Error occured: " + error
 			});
 		} else {
 			try {
 				if (result[0].length != 0) {
 					var result = result[0][0];
-					var userData = {
+					var data = {
 						user: {
 							userID: result.uid,
 							userRole: result.userRole,
-							userName: result.login,
+							userName: result.login
+						}
+					}
+					console.log(data)
+					var userData = {
+						user: {
 							firstname: result.firstname,
 							lastname: result.lastname,
 							phoneNumber: result.phoneNumber
@@ -53,29 +58,30 @@ router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 
 					if (hash === result.password) {
 						var secret = req.app.get('secret')
-						var token = auth.getToken(userData.user, secret)
-
+						var token = auth.getToken(data.user, secret)
+						
 						res.cookie("authToken", token)
 						res.status(200).json({
-							type: true,
+							status: true,
+							token: token,
 							data: userData,
 							message: SRes.message.success_l
 						})
 					} else {
 						res.status(200).json({
-							type: false,
+							status: false,
 							message: SRes.message.badRequest
 						})
 					}
 				} else {
 					res.status(200).json({
-						type: false,
+						status: false,
 						message: SRes.message.badRequest
 					})
 				}
 			} catch (e) {
 				res.status(500).json({
-					type: false,
+					status: false,
 					message: SRes.message.error
 				});
 			}

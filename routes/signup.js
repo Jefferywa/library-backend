@@ -38,18 +38,18 @@ router.post('/signup', urlencodedParser, parseJSON, function (req, res) {
 	SQL.MySQL_Connection(SQL.DBData).query(SQL.signUp, [login, hash, firstname, lastname, salt], function (error, result) {
 		if (error) {
 			res.json({
-				type: false,
+				status: false,
 				message: "Error occured: " + error
 			});
 		} else {
 			try {
 				res.status(200).json({
-					type: true,
+					status: true,
 					message: SRes.message.success_r
 				});
 			} catch (e) {
 				res.status(500).json({
-					type: false,
+					status: false,
 					message: SRes.message.error
 				});
 			}
