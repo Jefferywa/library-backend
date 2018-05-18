@@ -35,7 +35,7 @@ router.get('/getBooks', urlencodedParser, function (req, res, next) {
 	SQL.MySQL_Connection(SQL.DBData).end();
 })
 
-router.post('/bookitbook', urlencodedParser, parseJSON, function (req, res) {
+router.post('/api/bookitbook', urlencodedParser, parseJSON, function (req, res) {
 	if (!req.decoded) {
 		console.log(req.decoded);
 	}

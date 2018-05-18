@@ -7,7 +7,6 @@ function getToken(user, secret) {
 	var token = jwt.sign(user, secret, { 
 		expiresIn: 1800 
 	})
-
 	return token;
 }
 

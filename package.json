@@ -16,11 +16,16 @@
     "log4js": "^2.6.0",
     "mysql": "^2.15.0",
     "popper.js": "^1.14.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "socket.io": "^2.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1"
+  },
   "scripts": {
-    "test": "it is work?",
     "start": "nodemon server.js"
   },
   "author": "JefferyWA",

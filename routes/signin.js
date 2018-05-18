@@ -38,13 +38,12 @@ router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 				if (result[0].length != 0) {
 					var result = result[0][0];
 					var data = {
-						user: {
+						payload: {
 							userID: result.uid,
 							userRole: result.userRole,
 							userName: result.login
 						}
 					}
-					console.log(data)
 					var userData = {
 						user: {
 							firstname: result.firstname,
@@ -58,9 +57,9 @@ router.post('/signin', urlencodedParser, parseJSON, function (req, res) {
 
 					if (hash === result.password) {
 						var secret = req.app.get('secret')
-						var token = auth.getToken(data.user, secret)
+						var token = auth.getToken(data.payload, secret)
 						
-						res.cookie("authToken", token)
+						//res.cookie("authToken", token) //TODO
 						res.status(200).json({
 							status: true,
 							token: token,

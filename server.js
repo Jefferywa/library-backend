@@ -27,37 +27,9 @@ app.set('secret', config.secret)
 app.use(express.static(path.join(__dirname, './public/')));
 app.use(cookieParser())
 
-var parseJSON = bodyParser.json()
-
-router.use(parseJSON, function (req, res, next) {
-	var token = req.body.token || req.query.token || req.headers['x-access-token'];
-	console.log("token", token)
-	//var token = req.cookies["authToken"];
-
-	if (token) {
-		jwt.verify(token, req.app.get('secret'), function (err, decoded) {
-			if (err) {
-				return res.json({
-					status: false,
-					message: 'Failed to authenticate token.'
-				})
-			} else {
-				req.decoded = decoded;
-				next()
-			}
-		})
-	} else {
-		return res.status(403).json({
-			status: false,
-			message: 'No token provided.'
-		})
-	}
-})
-
-
 app.use('/', index)
 app.use('/', signin)
-app.use('/', router) // THIS IS BULLSHIT, I FUCKED THIS LANGUAGE
+app.use('/api', userData.router) // THIS IS BULLSHIT, I FUCKED THIS JAVASCRIPT
 app.use('/', signup)
 app.use('/', books)
 
