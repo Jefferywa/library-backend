@@ -13,4 +13,3 @@ $('.btn-login').click(function (event) {
             }
     }, 'json')
 });
-

@@ -5,6 +5,7 @@ const app = express()
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const ejs = require('ejs')
+const webpack = require('webpack')
 const router = express.Router()
 
 const SRes = require('./routes/s_response/res')
@@ -25,6 +26,7 @@ app.set('view engine', 'ejs')
 app.set('secret', config.secret)
 //public dir
 app.use(express.static(path.join(__dirname, './public/')));
+app.use(express.static(path.join(__dirname, './src/')));
 app.use(cookieParser())
 
 app.use('/', index)
