@@ -31,7 +31,7 @@ app.use(cookieParser())
 
 app.use('/', index)
 app.use('/', signin)
-app.use('/api', userData.router) // THIS IS BULLSHIT, I FUCKED THIS JAVASCRIPT
+app.use('/api', userData.router)
 app.use('/', signup)
 app.use('/', books)
 
